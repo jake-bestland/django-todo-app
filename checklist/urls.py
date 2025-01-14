@@ -5,5 +5,5 @@ from . import views
 app_name = 'checklist'
 
 urlpatterns = [
-    path('', views.HomePageView.as_view(), name='homepage'),
+    path('', views.homepage, name='homepage'),
 ]
