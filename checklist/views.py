@@ -40,5 +40,5 @@ def homepage(request):
             signupform = SignupForm()
             signinform = SigninForm()
 
-    return render(request, 'homnepage.html', {'signupform': signupform,
+    return render(request, 'checklist/homepage.html', {'signupform': signupform,
                                               'signinform': signinform})
