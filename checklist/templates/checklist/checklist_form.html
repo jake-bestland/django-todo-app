@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>{{ title }}</h3>
+<div>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input
+                value="Save"
+                type="submit">
+            <button
+                value="Cancel"
+                type="reset">
+                <a href="{% url 'checklist:user_checklist_index' %}" class="btn btn-primary">Cancel</a>
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

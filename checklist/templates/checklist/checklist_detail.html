@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div>
+    <div>
+        <div>
+            <h3>Edit list:</h3>
+            <h5>{{ checklist.title | upper }}</h5>
+        </div>
+        <ul>
+            {% for entry in object_list %}
+            <li>
+                <div>
+                    <button>
+                    <a
+                        class="btn btn-primary"
+                        href="{% url 'checklist:entry-update' checklist.id entry.id %}">
+                        {{ entry.name }}
+                        <!-- {% if entry.due_date %}
+                        (Due {{ entry.due_date | date:"l, F j" }})
+                        {% endif %} -->
+                    </a>
+                    </button>
+                </div>
+            </li>
+            {% empty %}
+            <p>There are no entries in this list.</p>
+            {% endfor %}
+        </ul>
+        <p>
+            <button>
+            <a
+                class="btn btn-primary"
+                href="{% url 'checklist:entry-add' checklist.id %}">
+                Add a new entry
+            </a>
+            </button>
+        </p>
+    </div>
+</div>
+
+{% endblock %}
