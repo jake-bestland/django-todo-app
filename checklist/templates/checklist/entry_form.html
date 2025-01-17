@@ -14,7 +14,7 @@
     <button
         value="Cancel"
         type="reset">
-        <a href="{% url 'checklist:checklist-detail' checklist.id %}" class="btn btn-primary">Cancel</a>
+        <a href="{% url 'checklist:checklist-detail' checklist.author checklist.slug %}" class="btn btn-primary">Cancel</a>
     </button>
 </form>
 

@@ -1,5 +1,6 @@
 from django.utils import timezone # (to add date for when to 'complete' checklist, e.g. when to go shopping)
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
@@ -18,11 +19,16 @@ class Checklist(models.Model):
     title = models.CharField(max_length=100, unique=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True)
-    
+    slug = models.SlugField(unique=True, null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        """overwrites the internal save() method to automatically create a slug, if not provided."""
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("checklist-detail", args=[self.id])
+        return reverse("checklist-detail", args=[str(self.slug)])
 
     def __str__(self):
         """String for representing the Model object."""
