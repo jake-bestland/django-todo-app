@@ -28,7 +28,7 @@ class Checklist(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("checklist-detail", args=[str(self.slug)])
+        return reverse("list", args=[str(self.author), str(self.id)])
 
     def __str__(self):
         """String for representing the Model object."""
@@ -42,12 +42,12 @@ class Entry(models.Model):
     notes = models.TextField(null=True, blank=True)  # maybe change to CharField
     # due_date = models.DateTimeField(null=True, blank=True)
     # sub_category = models.CharField(max_length=100, null=True, blank=True)
-    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE, null=True)      ### maybe change to ManytoManyField later?
+    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)      ### maybe change to ManytoManyField later?
     ## quantity
 
     def get_absolute_url(self):
         return reverse(
-            "entry-update", args=[str(self.checklist.id), str(self.id)]
+            "entry-update", args=[str(self.checklist.author), str(self.checklist.id), str(self.id)]
         )
 
     def __str__(self):
