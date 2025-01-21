@@ -47,7 +47,7 @@ class SigninForm(AuthenticationForm):
 class NewChecklistForm(forms.ModelForm):
     class Meta:
         model = Checklist
-        fields = ['title', 'author', 'pub_date', 'slug']
+        fields = ['title']
 
 class EntryForm(forms.ModelForm):
     class Meta:
