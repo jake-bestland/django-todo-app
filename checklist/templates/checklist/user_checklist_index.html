@@ -3,25 +3,33 @@
 
 {% block content %}
 
-{% if object_list %}
-<h3>All my lists</h3>
-{% endif %}
-<ul>
-    {% for checklist in object_list %}
-    <li>
-        <div>
-            <button>
-            <a href="{% url 'checklist:checklist-detail' checklist.author checklist.slug %}" class="btn btn-primary">
-            {{ checklist.title }}
+{% if user.is_authenticated %}
+    {% if object_list %}
+    <h3>All my lists</h3>
+    {% endif %}
+    <ul>
+        {% for checklist in object_list %}
+        <li>
+            <div>
+                <button>
+                <a href="/{{ user.username }}/list/{{ checklist.id }}/" class="btn btn-primary">
+                {{ checklist.title }}
+                </a>
+                </button>
+            </div>
+        </li>
+        {% empty %}
+        <h4>You have no lists!</h4>
+        {% endfor %}
+    </ul>
+
+    <p>
+        <button>
+            <a href="/{{ user.username }}/list/add/" class="btn btn-primary">
+                Add a new list
             </a>
-            </button>
-        </div>
-    </li>
-    {% empty %}
-    <h4>You have no lists!</h4>
-    {% endfor %}
-</ul>
-
-
+        </button>
+    </p>
+{% endif %}
 
 {% endblock %}

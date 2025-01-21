@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h3>{{ title }}</h3>
+<h3>{{ name }}</h3>
 <form method="post">
     {% csrf_token %}
     <table>
@@ -14,7 +14,7 @@
     <button
         value="Cancel"
         type="reset">
-        <a href="{% url 'checklist:checklist-detail' checklist.author checklist.slug %}" class="btn btn-primary">Cancel</a>
+        <a href="/{{ user.username }}/list/{{ checklist.id }}/" class="btn btn-primary">Cancel</a>
     </button>
 </form>
 
