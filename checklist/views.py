@@ -48,16 +48,16 @@ def signout(request):
     return redirect('/')
 
 @login_required
-def create_checklist(request):
+def create_checklist(request, username):
     if request.method == 'POST':
         form = NewChecklistForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index') #Use success URL
+            return redirect('/') #Use success URL
     else:
         form = NewChecklistForm()
 
-    return render(request, 'checklist_form.html', {'form': form})
+    return render(request, 'checklist/checklist_form.html', {'form': form})
 
 @login_required
 def create_entry(request):
@@ -69,7 +69,7 @@ def create_entry(request):
     else:
         form = EntryForm()
 
-    return render(request, 'entry_form.html', {'form': form})
+    return render(request, 'checklist/entry_form.html', {'form': form})
 
 @login_required
 def update_entry(request, pk):
@@ -83,7 +83,7 @@ def update_entry(request, pk):
     else:
         form = EntryForm(instance=entry_instance)
 
-    return render(request, 'entry_form.html', {'form': form})
+    return render(request, 'checklist/entry_form.html', {'form': form})
 
 class UserChecklistListView(LoginRequiredMixin, generic.ListView):
     """Generic class-based view listing checklists created by current user."""

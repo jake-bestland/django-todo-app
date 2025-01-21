@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h3>Delete Entry</h3>
+
+<p>Are you sure you want to delete the entry: <b>{{ object.name }}</b>
+    <p>from the list <i>{{ checklist.title }}</i>?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+        <button type="reset">
+            <a href="/{{user.username }}/list/{{ checklist.id }}/" class="btn btn-primary">Cancel</a>
+        </button>
+    </form>
+
+    {% endblock %}
