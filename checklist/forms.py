@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from .models import Checklist, Entry
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField(required=True,
@@ -42,3 +43,13 @@ class SigninForm(AuthenticationForm):
     password = forms.CharField(widget=forms.widgets.PasswordInput(
                                     attrs={'placeholder': 'Password',
                                            'class': 'form-control'}))
+    
+class NewChecklistForm(forms.ModelForm):
+    class Meta:
+        model = Checklist
+        fields = ['title', 'author', 'pub_date', 'slug']
+
+class EntryForm(forms.ModelForm):
+    class Meta:
+        model = Entry
+        fields = ['name', 'notes', 'checklist']
