@@ -30,6 +30,9 @@
             <button type="button">
                 <a class="btn btn-primary" href="/{{ user.username }}/{{ checklist.id }}/entry/add/">Add a new entry</a>
             </button>
+            <button type="button">
+                <a class="btn btn-primary" href="{% url 'checklist:list-delete' checklist.id %}">Delete this list</a>
+            </button>
         </p>
     </div>
 </div>

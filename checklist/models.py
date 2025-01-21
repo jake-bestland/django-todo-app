@@ -47,7 +47,7 @@ class Entry(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            "entry-update", args=[str(self.checklist.author), str(self.checklist.id), str(self.id)]
+            "checklist:entry-update", args=[str(self.checklist.author), str(self.checklist.id), str(self.id)]
         )
 
     def __str__(self):

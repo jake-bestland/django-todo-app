@@ -60,12 +60,12 @@ def create_checklist(request, username):
     return render(request, 'checklist/checklist_form.html', {'form': form})
 
 @login_required
-def create_entry(request):
+def create_entry(request, username, list_id):
     if request.method == 'POST':
         form = EntryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('list') #Use success URL
+            return redirect('/' + username + '/list/' + str(list_id)) #Use success URL
     else:
         form = EntryForm()
 
