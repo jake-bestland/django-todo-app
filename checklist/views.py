@@ -49,15 +49,20 @@ def signout(request):
 
 @login_required
 def create_checklist(request, username):
-    if request.method == 'POST':
-        form = NewChecklistForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/') #Use success URL
-    else:
-        form = NewChecklistForm()
+    if request.user.is_authenticated:
+        user = User.objects.get(username=username)
 
-    return render(request, 'checklist/checklist_form.html', {'form': form})
+        if request.method == 'POST':
+            form = NewChecklistForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/') #Use success URL
+        else:
+            form = NewChecklistForm()
+
+        return render(request, 'checklist/checklist_form.html', {'form': form, 'user':user})
+    else:
+        return redirect('/')
 
 @login_required
 def create_entry(request, username, list_id):
@@ -169,7 +174,7 @@ class EntryDelete(LoginRequiredMixin, generic.DeleteView):
     model = Entry
 
     def get_success_url(self):
-        return reverse_lazy("list", args=[self.kwargs["list_id"]])
+        return reverse_lazy("list", args=[self.kwargs["slug"]])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
