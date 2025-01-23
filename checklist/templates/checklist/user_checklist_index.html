@@ -12,7 +12,7 @@
         <li>
             <div>
                 <button>
-                <a href="/{{ user.username }}/list/{{ checklist.id }}/" class="btn btn-primary">
+                <a href="{% url 'list' checklist.slug %}" class="btn btn-primary">
                 {{ checklist.title }}
                 </a>
                 </button>
@@ -25,7 +25,7 @@
 
     <p>
         <button>
-            <a href="/{{ user.username }}/list/add/" class="btn btn-primary">
+            <a href="{% url 'list-add' user.username %}" class="btn btn-primary">
                 Add a new list
             </a>
         </button>

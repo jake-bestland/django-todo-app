@@ -10,7 +10,7 @@
             <button type="submit" class="btn btn-primary">Save</button>
             <button
                 type="reset">
-                <a href="/{{user.username}}/" class="btn btn-primary">Cancel</a>
+                <a href="{% url 'index' user.username %}" class="btn btn-primary">Cancel</a>
             </button>
         </form>
     </div>
