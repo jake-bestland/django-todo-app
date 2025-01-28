@@ -10,12 +10,12 @@
     </table>
     <button type="submit" class="btn btn-primary">Save</button>
     <button
-        type="reset">
-        <a href="/{{ user.username }}/list/{{ checklist.id }}/" class="btn btn-primary">Cancel</a>
+        type="button">
+        <a href="{{ checklist.get_absolute_url }}" class="btn btn-primary">Cancel</a>
     </button>
     {% if object %}
     <button type="button">
-        <a href="{% url 'checklist:entry-delete' checklist.id object.id %}">Delete this entry</a>
+        <a href="{% url 'entry-delete' user.username checklist.slug object.id %}">Delete this entry</a>
     </button>
     {% endif %}
 </form>

@@ -11,8 +11,8 @@
     <form method="POST">
         {% csrf_token %}
         <button type="submit">Yes, delete</button>
-        <button type="reset">
-            <a href="/{{user.username }}/list/{{ checklist.id }}/" class="btn btn-primary">Cancel</a>
+        <button type="button">
+            <a href="{{ checklist.get_absolute_url }}" class="btn btn-primary">Cancel</a>
         </button>
     </form>
 

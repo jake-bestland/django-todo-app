@@ -16,8 +16,11 @@
                     <button>
                     <a
                         class="btn btn-primary"
-                        href="/{{ user.username }}/list/{{ checklist.id }}/">
+                        href='{% url "entry-update" user.username checklist.slug entry.id %}'>
                         {{ entry.name }}
+                        {% if entry.due_date %}
+                            (Due {{ entry.due_date | date:"l, F j"}})
+                        {% endif %}
                     </a>
                     </button>
                 </div>
@@ -28,10 +31,10 @@
         </ul>
         <p>
             <button type="button">
-                <a class="btn btn-primary" href="/{{ user.username }}/{{ checklist.id }}/entry/add/">Add a new entry</a>
+                <a class="btn btn-primary" href="{% url 'entry-add' user.username checklist.slug %}">Add a new entry</a>
             </button>
             <button type="button">
-                <a class="btn btn-primary" href="{% url 'checklist:list-delete' checklist.id %}">Delete this list</a>
+                <a class="btn btn-primary" href="{% url 'list-delete' user.username checklist.slug %}">Delete this list</a>
             </button>
         </p>
     </div>

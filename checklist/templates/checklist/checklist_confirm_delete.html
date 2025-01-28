@@ -9,9 +9,10 @@
 <form method="POST">
     {% csrf_token %}
     <button type="submit" class="btn btn-primary">Yes, delete</button>
-    <button type="reset">
-        <a href="/{{ user.username }}/" class="btn btn-primary">Cancel</a>
-    </button>
 </form>
+<button type="button">
+    <a href="{% url 'index' user.username %}" class="btn btn-primary">Cancel</a>
+</button>
+
 
 {% endblock %}

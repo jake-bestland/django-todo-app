@@ -12,7 +12,7 @@
         <li>
             <div>
                 <button>
-                <a href="{% url 'list' checklist.slug %}" class="btn btn-primary">
+                <a href="{% url 'list' user.username checklist.slug %}" class="btn btn-primary">
                 {{ checklist.title }}
                 </a>
                 </button>
