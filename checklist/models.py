@@ -62,7 +62,7 @@ class Entry(models.Model):
     """Model representing an entry for a checklist."""
 
     name = models.CharField(max_length=100, help_text="Add an entry to your list.")
-    checklist = models.ForeignKey(Checklist, on_delete=models.RESTRICT, null=True)
+    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE, null=True)
     completed = models.BooleanField(default=False)
 
     creation_date = models.DateTimeField('date created', auto_now_add=True, blank=True, null=True)
