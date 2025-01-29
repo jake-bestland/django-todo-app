@@ -23,7 +23,7 @@
                             <a class="nav-link" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ checklist.get_absolute_url }}">My Lists</a>
+                            <a class="nav-link" href="{% url 'index' user.username %}">My Lists</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/signout">Sign out</a>

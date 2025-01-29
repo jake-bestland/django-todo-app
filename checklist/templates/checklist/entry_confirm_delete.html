@@ -10,9 +10,9 @@
 
     <form method="POST">
         {% csrf_token %}
-        <button type="submit">Yes, delete</button>
+        <button type="submit" class="btn btn-primary">Yes, delete</button>
         <button type="button">
-            <a href="{{ checklist.get_absolute_url }}" class="btn btn-primary">Cancel</a>
+            <a href="{% url 'list' user.username checklist.slug %}" class="btn btn-primary">Cancel</a>
         </button>
     </form>
 
