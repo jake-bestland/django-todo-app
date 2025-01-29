@@ -42,7 +42,7 @@ class Checklist(models.Model):
     """Model representing a checklist."""
     title = models.CharField(max_length=100, unique=True)
     author = models.ForeignKey(Profile, on_delete=models.RESTRICT, null=True)
-    slug = models.SlugField(unique=True, null=True, blank=True)
+    slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
         """overwrites the internal save() method to automatically create a slug, if not provided."""
@@ -50,8 +50,8 @@ class Checklist(models.Model):
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
 
-    # def get_absolute_url(self):
-    #     return reverse("list", args=[str(self.slug)])
+    def get_absolute_url(self):
+        return reverse("list", kwargs=[str(self.author), str(self.slug)])
 
     def __str__(self):
         """String for representing the Model object."""
@@ -70,6 +70,9 @@ class Entry(models.Model):
     # notes = models.TextField(null=True, blank=True)  # maybe change to CharField # or change to quantity
     # sub_category = models.CharField(max_length=100, null=True, blank=True)
 
+    def get_absolute_url(self):
+        return reverse("entry-update", kwargs=[str(self.checklist.author.user), str(self.checklist.slug), str(self.id)])
+    
     def __str__(self):
         """String for representing the Model object."""
         return self.name

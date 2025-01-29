@@ -52,4 +52,4 @@ class NewChecklistForm(forms.ModelForm):
 class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
-        fields = ['name', 'notes', 'checklist']
+        fields = ['name', 'checklist']
