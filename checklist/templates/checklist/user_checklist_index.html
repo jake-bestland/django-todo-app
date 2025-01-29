@@ -11,10 +11,10 @@
         {% for checklist in object_list %}
         <li>
             <div>
-                <button>
-                <a href="{% url 'list' user.username checklist.slug %}" class="btn btn-primary">
-                {{ checklist.title }}
-                </a>
+                <button type="button">
+                    <a href="{% url 'list' user.username checklist.slug %}" class="btn btn-primary">
+                        {{ checklist.title }}
+                    </a>
                 </button>
             </div>
         </li>
@@ -24,8 +24,8 @@
     </ul>
 
     <p>
-        <button>
-            <a href="{% url 'list-add' user.username %}" class="btn btn-primary">
+        <button type="button">
+            <a href="{% url 'add-list' user.username %}" class="btn btn-primary">
                 Add a new list
             </a>
         </button>

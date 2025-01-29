@@ -44,12 +44,12 @@ class SigninForm(AuthenticationForm):
                                     attrs={'placeholder': 'Password',
                                            'class': 'form-control'}))
     
-class NewChecklistForm(forms.ModelForm):
-    class Meta:
-        model = Checklist
-        fields = ['title']
+# class NewChecklistForm(forms.ModelForm):
+#     class Meta:
+#         model = Checklist
+#         fields = ['title']
 
-class EntryForm(forms.ModelForm):
-    class Meta:
-        model = Entry
-        fields = ['name', 'checklist']
+# class EntryForm(forms.ModelForm):
+#     class Meta:
+#         model = Entry
+#         fields = ['name', 'checklist']

@@ -3,11 +3,11 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from checklist.forms import SignupForm, SigninForm
-from .models import Checklist, Entry
+from .models import Checklist, Entry, Profile
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse, reverse_lazy
-from .forms import NewChecklistForm, EntryForm
+# from .forms import NewChecklistForm#, EntryForm
 
 # Create your views here.
 def homepage(request):
@@ -56,7 +56,7 @@ def signout(request):
 #             form = NewChecklistForm(request.POST)
 #             if form.is_valid():
 #                 form.save()
-#                 return redirect('/') #Use success URL
+#                 return redirect("index", args=[user]) #Use success URL
 #         else:
 #             form = NewChecklistForm()
 
@@ -119,13 +119,22 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
 
 class ChecklistCreate(LoginRequiredMixin, generic.CreateView):
     model = Checklist
-    fields = ["title"]
+    fields = ["title", "author"]
+
+    def get_initial(self):
+        initial_data = super().get_initial()
+        author = Profile.objects.get(user=self.request.user)
+        initial_data["author"] = author
+        return initial_data
     
-    def get_context_data(self):
-        context = super().get_context_data()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["title"] = "Add a new list."
         return context
     
+    def get_success_url(self):
+        return reverse("index", args=[self.request.user])
+
 class EntryCreate(LoginRequiredMixin, generic.CreateView):
     model = Entry
     fields = [
