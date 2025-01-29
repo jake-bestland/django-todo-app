@@ -47,134 +47,137 @@ def signout(request):
     logout(request)
     return redirect('/')
 
-@login_required
-def create_checklist(request, username):
-    if request.user.is_authenticated:
-        user = User.objects.get(username=username)
+# @login_required
+# def create_checklist(request, username):
+#     if request.user.is_authenticated:
+#         user = User.objects.get(username=username)
 
-        if request.method == 'POST':
-            form = NewChecklistForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('/') #Use success URL
-        else:
-            form = NewChecklistForm()
+#         if request.method == 'POST':
+#             form = NewChecklistForm(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('/') #Use success URL
+#         else:
+#             form = NewChecklistForm()
 
-        return render(request, 'checklist/checklist_form.html', {'form': form, 'user':user})
-    else:
-        return redirect('/')
+#         return render(request, 'checklist/checklist_form.html', {'form': form, 'user':user})
+#     else:
+#         return redirect('/')
 
-@login_required
-def create_entry(request, username, list_id):
-    if request.method == 'POST':
-        form = EntryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/' + username + '/list/' + str(list_id)) #Use success URL
-    else:
-        form = EntryForm()
+# @login_required
+# def create_entry(request, username, slug):
+#     if request.user.is_authenticated:
+#         user = User.objects.get(username=username)
+#         if request.method == 'POST':
+#             form = EntryForm(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('/' + username + '/' + str(slug) + '/add-entry/') #Use success URL
+#         else:
+#             form = EntryForm()
 
-    return render(request, 'checklist/entry_form.html', {'form': form})
+#         return render(request, 'checklist/entry_form.html', {'form': form})
+#     else:
+#         return redirect('/')
 
-@login_required
-def update_entry(request, pk):
-    entry_instance = get_object_or_404(Entry, pk=pk)
+# @login_required
+# def update_entry(request, pk):
+#     entry_instance = get_object_or_404(Entry, pk=pk)
 
-    if request.method == 'POST':
-        form = EntryForm(request.POST, instance=entry_instance)
-        if form.is_valid():
-            form.save()
-            return redirect('list') #Use success URL
-    else:
-        form = EntryForm(instance=entry_instance)
+#     if request.method == 'POST':
+#         form = EntryForm(request.POST, instance=entry_instance)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('list') #Use success URL
+#     else:
+#         form = EntryForm(instance=entry_instance)
 
-    return render(request, 'checklist/entry_form.html', {'form': form})
+#     return render(request, 'checklist/entry_form.html', {'form': form})
 
 class UserChecklistListView(LoginRequiredMixin, generic.ListView):
     """Generic class-based view listing checklists created by current user."""
     model = Checklist
     template_name = 'checklist/user_checklist_index.html'
 
-    # def get_queryset(self):
-    #     """Return lists created by user."""
-    #     return Checklist.objects.filter(author=self.request.user).order_by('-pub_date')
+    def get_queryset(self):
+        """Return lists created by user."""
+        return Checklist.objects.filter(author__user=self.request.user)
 
 class EntryListView(LoginRequiredMixin, generic.ListView):
     model = Entry
     template_name = 'checklist/checklist.html'
 
     def get_queryset(self):
-        return Entry.objects.filter(checklist_id=self.kwargs["list_id"])
+        return Entry.objects.filter(checklist__slug=self.kwargs["slug"])
     
     def get_context_data(self):
         context = super().get_context_data()
-        context["checklist"] = Checklist.objects.get(id=self.kwargs["list_id"])
+        context["checklist"] = Checklist.objects.get(slug=self.kwargs["slug"])
         return context
 
 
 
-# class ChecklistCreate(LoginRequiredMixin, generic.CreateView):
-#     model = Checklist
-#     fields = ["title"]
+class ChecklistCreate(LoginRequiredMixin, generic.CreateView):
+    model = Checklist
+    fields = ["title"]
     
-#     def get_context_data(self):
-#         context = super().get_context_data()
-#         context["title"] = "Add a new list."
-#         return context
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["title"] = "Add a new list."
+        return context
     
-# class EntryCreate(LoginRequiredMixin, generic.CreateView):
-#     model = Entry
-#     fields = [
-#         "checklist",
-#         "name",
-#         "notes",
-#     ]
+class EntryCreate(LoginRequiredMixin, generic.CreateView):
+    model = Entry
+    fields = [
+        "checklist",
+        "name",
+    ]
 
-#     def get_initial(self):
-#         initial_data = super().get_initial()
-#         checklist = Checklist.objects.get(id=self.kwargs["checklist_id"])
-#         initial_data["checklist"] = checklist
-#         return initial_data
+    def get_initial(self):
+        initial_data = super().get_initial()
+        checklist = Checklist.objects.get(slug=self.kwargs["slug"])
+        initial_data["checklist"] = checklist
+        return initial_data
     
-#     def get_context_data(self):
-#         context = super().get_context_data()
-#         checklist = Checklist.objects.get(id=self.kwargs["checklist_id"])
-#         context["checklist"] = checklist
-#         context["name"] = "Create a new item"
-#         return context
+    def get_context_data(self):
+        context = super().get_context_data()
+        checklist = Checklist.objects.get(slug=self.kwargs["slug"])
+        context["checklist"] = checklist
+        context["name"] = "Create a new entry"
+        return context
     
-#     def get_success_url(self, username):
-#         user = User.objects.get(username=username)
-#         return redirect('/' + user.username +)
+    def get_success_url(self):
+        return reverse("list", args=[self.request.user, self.object.checklist.slug])
 
-# class EntryUpdate(LoginRequiredMixin, generic.UpdateView):
-#     model = Entry
-#     fields = [
-#         "checklist",
-#         "name",
-#         "notes",
-#     ]
+class EntryUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Entry
+    fields = [
+        "checklist",
+        "name",
+    ]
 
-#     def get_context_data(self):
-#         context = super().get_context_data()
-#         context["checklist"] = self.object.checklist
-#         context["name"] = "Edit entry"
-#         return context
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["checklist"] = self.object.checklist
+        context["name"] = "Edit entry"
+        return context
     
-#     def get_success_url(self):
-#         return reverse("list", args=[self.object.checklist_id])
+    def get_success_url(self):
+        return reverse("list", args=[self.request.user, self.object.checklist.slug])
 
 
 class ChecklistDelete(LoginRequiredMixin, generic.DeleteView):
     model = Checklist
-    success_url = reverse_lazy("index")
+
+    def get_success_url(self):
+        return reverse_lazy("index", args=[self.request.user])
 
 
 class EntryDelete(LoginRequiredMixin, generic.DeleteView):
     model = Entry
 
     def get_success_url(self):
-        return reverse_lazy("list", args=[self.kwargs["slug"]])
+        return reverse_lazy("list", args=[self.request.user, self.object.checklist.slug])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -51,7 +51,7 @@ class Checklist(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("list", kwargs=[str(self.author), str(self.slug)])
+        return reverse("list", kwargs=[str(self.author.user), str(self.slug)])
 
     def __str__(self):
         """String for representing the Model object."""
