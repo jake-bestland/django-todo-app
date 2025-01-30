@@ -1,0 +1,7 @@
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+
+  <input type="submit" value="Logout" class="btn btn-link"/>
+  <input type="hidden" name="next" value="{% url 'homepage' %}" />
+</form>
+
