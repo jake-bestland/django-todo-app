@@ -39,8 +39,25 @@ def homepage(request):
             signupform = SignupForm()
             signinform = SigninForm()
 
-    return render(request, 'checklist/homepage.html', {'signupform': signupform,
-                                              'signinform': signinform})
+    return render(request, 'checklist/homepage.html', {"signupform": signupform,
+                                                       "signinform": signinform})
+
+def sign_up(request):
+    if request.method == "POST":
+        signupform = SignupForm(data=request.POST)
+        if signupform.is_valid():
+            username = signupform.cleaned_data['username']
+            password = signupform.cleaned_data['password1']
+            signupform.save()
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('/')
+    else:
+        signupform = SignupForm()
+    
+    return render(request, 'registration/sign_up.html', {"signupform": signupform})
+
+
 
 @login_required
 def signout(request):
@@ -80,19 +97,24 @@ def signout(request):
 #     else:
 #         return redirect('/')
 
-# @login_required
-# def update_entry(request, pk):
-#     entry_instance = get_object_or_404(Entry, pk=pk)
+@login_required
+def mark_complete(request, username, pk):
+    entry_instance = Entry.objects.get(pk=pk)
 
-#     if request.method == 'POST':
-#         form = EntryForm(request.POST, instance=entry_instance)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('list') #Use success URL
-#     else:
-#         form = EntryForm(instance=entry_instance)
+    entry_instance.completed = True
+    entry_instance.save()
 
-#     return render(request, 'checklist/entry_form.html', {'form': form})
+    return redirect(reverse("list", args=[entry_instance.checklist.author.user, entry_instance.checklist.slug]))
+
+@login_required
+def mark_incomplete(request, username, pk):
+    entry_instance = Entry.objects.get(pk=pk)
+
+    entry_instance.completed = False
+    entry_instance.save()
+
+    return redirect(reverse("list", args=[entry_instance.checklist.author.user, entry_instance.checklist.slug]))
+
 
 class UserChecklistListView(LoginRequiredMixin, generic.ListView):
     """Generic class-based view listing checklists created by current user."""
