@@ -4,24 +4,18 @@
 {% block content %}
 
 <div>
-    <div>
+    <div class="col-6">
         <div>
             <h3>Edit list:</h3>
             <h5>{{ checklist.title | upper }}</h5>
         </div>
         <ul class="list-group">
             {% for entry in object_list %}
-                {% if entry.completed %}
-                    <a href='{% url "mark_incomplete" user.username entry.id %}' class="list-group-item list-group-item-action">
-                        <input class="form-check-input me-1" type="checkbox" value="" id="{{ entry.name }}">
-                        <label class="form-check-label" style="text-decoration: line-through" for="{{ entry.name}}">{{ entry.name }}</label>
-                    </a>
-                {% else %}
-                    <a href='{% url "mark_complete" user.username entry.id %}' class="list-group-item list-group-item-action">
-                        <input class="form-check-input me-1" type="checkbox" value="" id="{{ entry.name }}">
-                        <label class="form-check-label" for="{{ entry.name}}">{{ entry.name }}</label>
-                    </a>
-                {% endif %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <input class="form-check-input" type="checkbox" value="" id="{{ entry.name }}">
+                <label class="form-check-label" for="{{ entry.name}}">{{ entry.name }}</label>
+                <a href="{% url 'entry-delete' user.username checklist.slug entry.id %}" class="badge text-bg-primary rounded-pill">Delete</a>
+            </li>
             {% empty %}
             <p>There are no entries in this list.</p>
             {% endfor %}
