@@ -2,12 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from checklist.forms import SignupForm, SigninForm
+from checklist.forms import SignupForm, SigninForm #, NewChecklistForm, EntryForm
 from .models import Checklist, Entry, Profile
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse, reverse_lazy
-# from .forms import NewChecklistForm#, EntryForm
 
 # Create your views here.
 def homepage(request):
@@ -42,27 +41,7 @@ def homepage(request):
     return render(request, 'checklist/homepage.html', {"signupform": signupform,
                                                        "signinform": signinform})
 
-def sign_up(request):
-    if request.method == "POST":
-        signupform = SignupForm(data=request.POST)
-        if signupform.is_valid():
-            username = signupform.cleaned_data['username']
-            password = signupform.cleaned_data['password1']
-            signupform.save()
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('/')
-    else:
-        signupform = SignupForm()
-    
-    return render(request, 'registration/sign_up.html', {"signupform": signupform})
 
-
-
-@login_required
-def signout(request):
-    logout(request)
-    return redirect('/')
 
 # @login_required
 # def create_checklist(request, username):
@@ -80,40 +59,6 @@ def signout(request):
 #         return render(request, 'checklist/checklist_form.html', {'form': form, 'user':user})
 #     else:
 #         return redirect('/')
-
-# @login_required
-# def create_entry(request, username, slug):
-#     if request.user.is_authenticated:
-#         user = User.objects.get(username=username)
-#         if request.method == 'POST':
-#             form = EntryForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('/' + username + '/' + str(slug) + '/add-entry/') #Use success URL
-#         else:
-#             form = EntryForm()
-
-#         return render(request, 'checklist/entry_form.html', {'form': form})
-#     else:
-#         return redirect('/')
-
-@login_required
-def mark_complete(request, username, pk):
-    entry_instance = Entry.objects.get(pk=pk)
-
-    entry_instance.completed = True
-    entry_instance.save()
-
-    return redirect(reverse("list", args=[entry_instance.checklist.author.user, entry_instance.checklist.slug]))
-
-@login_required
-def mark_incomplete(request, username, pk):
-    entry_instance = Entry.objects.get(pk=pk)
-
-    entry_instance.completed = False
-    entry_instance.save()
-
-    return redirect(reverse("list", args=[entry_instance.checklist.author.user, entry_instance.checklist.slug]))
 
 
 class UserChecklistListView(LoginRequiredMixin, generic.ListView):
