@@ -11,9 +11,7 @@
     <form method="POST">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary">Yes, delete</button>
-        <button type="button">
-            <a href="{% url 'list' user.username checklist.slug %}" class="btn btn-primary">Cancel</a>
-        </button>
+        <a href="{% url 'list' user.username checklist.slug %}" class="btn btn-primary">Cancel</a>
     </form>
 
     {% endblock %}
