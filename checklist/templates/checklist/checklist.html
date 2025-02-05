@@ -3,17 +3,16 @@
 
 {% block content %}
 
-<div>
+
     <div class="col-6">
         <div>
-            <h3>Edit list:</h3>
-            <h5>{{ checklist.title | upper }}</h5>
+            <h3>{{ checklist.title | title }}:</h3>
         </div>
-        <ul class="list-group border border-black">
+        <ul class="list-group border mb-3 border-black">
             {% for entry in object_list %}
-            <li class="list-group-item d-flex justify-content-between align-items-center border border-black">
-                <input class="form-check-input" type="checkbox" value="" id="{{ entry.name }}">
-                <label class="form-check-label" for="{{ entry.name}}">{{ entry.name }}</label>
+            <li class="list-group-item d-flex justify-content-between align-items-center ps-4 border border-black">
+                <input class="form-check-input me-1" type="checkbox" value="" id="{{ entry.name }}">
+                <label class="form-check-label ps-2" for="{{ entry.name}}">{{ entry.name|title }}</label>
                 <a href="{% url 'entry-delete' user.username checklist.slug entry.id %}" class="badge text-bg-primary rounded-pill">Delete</a>
             </li>
             {% empty %}
@@ -21,19 +20,12 @@
             {% endfor %}
         </ul>
         <p>
-            <button type="button">
                 <a class="btn btn-primary" href="{% url 'entry-add' user.username checklist.slug %}">Add a new entry</a>
-            </button>
-            <button type="button">
-                <a class="btn btn-primary" href="{% url 'list-delete' user.username checklist.slug %}">Delete this list</a>
-            </button>
-            <button type="button">
-                <a href="{% url 'index' user.username %}" class="btn btn-primary">
-                    Back
-                </a>
-            </button>
+                <a class="btn btn-danger" href="{% url 'list-delete' user.username checklist.slug %}">Delete this list</a>
+                <a href="{% url 'index' user.username %}" class="btn btn-primary">Back</a>
+
         </p>
     </div>
-</div>
+
 
 {% endblock %}
