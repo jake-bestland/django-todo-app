@@ -26,12 +26,13 @@ class Profile(models.Model):
     )
 
     @receiver(post_save, sender=User)
-    def create_profile(sender, instance, created, **kwargs):
+    def create_user_profile(sender, instance, created, **kwargs):
         if created:
-            user_profile = Profile(user=instance)
-            user_profile.save()
-            user_profile.friends.add(instance.profile)
-            user_profile.save()
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
     def __str__(self):
         return self.user.username
@@ -76,3 +77,7 @@ class Entry(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.name
+    
+    class Meta:
+        ordering = ['creation_date']
+
