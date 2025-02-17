@@ -20,7 +20,7 @@
                     </li>
                     {% if request.user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'index' user.username %}">My Lists</a>
+                            <a class="nav-link" href="{% url 'checklist:index' user.username %}">My Lists</a>
                         </li>
                         <li class="nav-item">
                             {% include 'registration/_logout.html' %}

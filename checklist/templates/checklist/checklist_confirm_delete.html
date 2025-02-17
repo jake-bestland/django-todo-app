@@ -9,7 +9,7 @@
 <form method="POST">
     {% csrf_token %}
     <button type="submit" class="btn btn-primary">Yes, delete</button>
-    <a href="{% url 'index' user.username %}" class="btn btn-primary">Cancel</a>
+    <a href="{% url 'checklist:index' user.username %}" class="btn btn-primary">Cancel</a>
 </form>
 
 {% endblock %}

@@ -10,7 +10,11 @@ from rest_framework.response import Response
 # Create your views here.
 class FriendsListView(LoginRequiredMixin, generic.ListView):
     model = Profile
-    template_name = 'friend.friends_list.html'
+    template_name = 'friend/friends_list.html'
+
+class ProfileListView(LoginRequiredMixin, generic.ListView):
+   model = Profile
+   template_name = 'friend/all_users.html'
 
 @login_required
 @api_view(['POST'])

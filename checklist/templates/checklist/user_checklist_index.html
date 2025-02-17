@@ -11,7 +11,7 @@
     
     <ul class="list-group border mb-3 border-black">
         {% for checklist in object_list %}
-        <a href="{% url 'list' user.username checklist.slug %}" class="list-group-item list-group-item-action border border-black">
+        <a href="{% url 'checklist:list' user.username checklist.slug %}" class="list-group-item list-group-item-action border border-black">
             <div class="d-flex justify-content-between align-items-center">
                 {{ checklist.title|title }}
                 <span class="badge text-bg-primary rounded-pill">{{ checklist.entry_set.all.count }}</span>
@@ -25,12 +25,17 @@
     </ul>
 
     <p>
-            <a href="{% url 'add-list' user.username %}" class="btn btn-primary">
+            <a href="{% url 'checklist:add-list' user.username %}" class="btn btn-primary">
                 Add a new list
             </a>
-            <a href="{% url 'homepage' %}" class="btn btn-primary">
+            <a href="{% url 'checklist:homepage' %}" class="btn btn-primary">
                 Home
             </a>
+    </p>
+    <p>
+        <a href="{% url 'friend:all-users' %}" class="btn btn-primary">
+            Add a friend
+        </a>
     </p>
 </div>
 {% endif %}
