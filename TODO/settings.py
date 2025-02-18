@@ -18,6 +18,8 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 env_path = load_dotenv(os.path.join(BASE_DIR, '.env'))
 load_dotenv(env_path)
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
+AUTH_USER_MODEL = 'account.Account'
 
 # Application definition
 
@@ -43,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'checklist',
     'friend',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +137,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+BASE_URL = "http://127.0.0.1:8000"

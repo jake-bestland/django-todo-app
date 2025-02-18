@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('checklist', '0007_alter_entry_checklist'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+
     ]
 
     operations = [
@@ -17,11 +17,7 @@ class Migration(migrations.Migration):
             model_name='entry',
             name='entry_name_case_insensitive_unique',
         ),
-        migrations.AlterField(
-            model_name='checklist',
-            name='author',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
-        ),
+
         migrations.AlterField(
             model_name='checklist',
             name='pub_date',

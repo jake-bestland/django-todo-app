@@ -5,7 +5,7 @@ from . import views
 app_name = 'checklist'
 
 urlpatterns = [
-    path('', views.homepage, name='homepage'),
+    # path('', views.homepage, name='homepage'),
     path('<str:username>/', views.UserChecklistListView.as_view(), name='index'),
     path('<str:username>/view/<slug:slug>/', views.EntryListView.as_view(), name="list"),
 

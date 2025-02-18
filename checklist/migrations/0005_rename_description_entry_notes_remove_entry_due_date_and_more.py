@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('checklist', '0004_remove_checklist_category_remove_checklist_due_date_and_more'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+
     ]
 
     operations = [
@@ -23,11 +23,7 @@ class Migration(migrations.Migration):
             model_name='entry',
             name='due_date',
         ),
-        migrations.AddField(
-            model_name='checklist',
-            name='author',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
-        ),
+
         migrations.AddField(
             model_name='checklist',
             name='pub_date',

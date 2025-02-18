@@ -2,44 +2,47 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from checklist.forms import SignupForm, SigninForm #, NewChecklistForm, EntryForm
-from .models import Checklist, Entry, Profile
+# from checklist.forms import SignupForm, SigninForm #, NewChecklistForm, EntryForm
+from .models import Checklist, Entry#, #Profile#, FriendRequest
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse, reverse_lazy
+from account.models import Account
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
 
 # Create your views here.
-def homepage(request):
-    if request.user.is_authenticated:
-        return redirect('/' + request.user.username + '/')
-    else:
-        if request.method =='POST':
-            if 'signupform' in request.POST:
-                signupform = SignupForm(data=request.POST)
-                signinform = SigninForm()
+# def homepage(request):
+#     if request.user.is_authenticated:
+#         return redirect('/' + request.user.username + '/')
+#     else:
+#         if request.method =='POST':
+#             if 'signupform' in request.POST:
+#                 signupform = SignupForm(data=request.POST)
+#                 signinform = SigninForm()
 
-                if signupform.is_valid():
-                    username = signupform.cleaned_data['username']
-                    password = signupform.cleaned_data['password1']
-                    signupform.save()
-                    user = authenticate(username=username, password=password)
-                    login(request, user)
-                    return redirect('/')
+#                 if signupform.is_valid():
+#                     username = signupform.cleaned_data['username']
+#                     password = signupform.cleaned_data['password1']
+#                     signupform.save()
+#                     user = authenticate(username=username, password=password)
+#                     login(request, user)
+#                     return redirect('/')
                 
-            else:
-                signinform = SigninForm(data=request.POST)
-                signupform = SignupForm()
+#             else:
+#                 signinform = SigninForm(data=request.POST)
+#                 signupform = SignupForm()
 
-                if signinform.is_valid():
-                    login(request, signinform.get_user())
-                    return redirect('/')
+#                 if signinform.is_valid():
+#                     login(request, signinform.get_user())
+#                     return redirect('/')
                 
-        else:
-            signupform = SignupForm()
-            signinform = SigninForm()
+#         else:
+#             signupform = SignupForm()
+#             signinform = SigninForm()
 
-    return render(request, 'checklist/homepage.html', {"signupform": signupform,
-                                                       "signinform": signinform})
+#     return render(request, 'checklist/homepage.html', {"signupform": signupform,
+#                                                        "signinform": signinform})
 
 
 
@@ -70,6 +73,10 @@ class UserChecklistListView(LoginRequiredMixin, generic.ListView):
         """Return lists created by user."""
         return Checklist.objects.filter(author__user=self.request.user)
 
+# class FriendsListView(LoginRequiredMixin, generic.ListView):
+#     model = Profile
+#     template_name = 'checklist.friends_list.html'
+
 class EntryListView(LoginRequiredMixin, generic.ListView):
     model = Entry
     template_name = 'checklist/checklist.html'
@@ -90,7 +97,7 @@ class ChecklistCreate(LoginRequiredMixin, generic.CreateView):
 
     def get_initial(self):
         initial_data = super().get_initial()
-        author = Profile.objects.get(user=self.request.user)
+        author = Account.objects.get(user=self.request.user)
         initial_data["author"] = author
         return initial_data
     
@@ -159,3 +166,56 @@ class EntryDelete(LoginRequiredMixin, generic.DeleteView):
         context = super().get_context_data(**kwargs)
         context["checklist"] = self.object.checklist
         return context
+
+# @login_required
+# @api_view(['POST'])
+# def send_friend_request(request, receiver_id):
+#     sender = request.user
+#     receiver = get_object_or_404(Profile, id=receiver_id)
+#     if sender != receiver:
+#       friend_request, created = FriendRequest.objects.get_or_create(sender=sender, receiver=receiver)
+#       if created:
+#         return Response({"message": "Friend request sent"})
+#       else:
+#         return Response({"message": "Friend request already sent"})
+#     else:
+#         return Response({"message": "Cannot send request to self"})
+
+# @login_required
+# @api_view(['GET'])
+# def list_pending_friend_requests(request):
+#     pending_requests = FriendRequest.objects.filter(receiver=request.user, status='pending')
+#     # Serialize and return the pending requests
+#     return Response(pending_requests)
+
+# @login_required
+# @api_view(['POST'])
+# def accept_friend_request(request, request_id):
+#     friend_request = get_object_or_404(FriendRequest, id=request_id, receiver=request.user, status='pending')
+#     friend_request.status = 'accepted'
+#     friend_request.save()
+#     friend_request.receiver.friends.add(friend_request.sender)
+#     friend_request.sender.friends.add(friend_request.receiver)
+
+#     return Response({"message": "Friend request accepted"})
+
+# @login_required
+# @api_view(['POST'])
+# def reject_friend_request(request, request_id):
+#     friend_request = get_object_or_404(FriendRequest, id=request_id, receiver=request.user, status='pending')
+#     friend_request.status = 'rejected'
+#     friend_request.save()
+#     return Response({"message": "Friend request rejected"})
+
+# @login_required
+# @api_view(['POST'])
+# def remove_friend(request, removee):
+#     """Initiate the action of unfriending someone."""
+#     remover = Profile.objects.get(user=request.user) # Person terminating the friendship
+#     # Remove friend from remover friend list
+#     remover.friends.remove(removee)
+#     # Remove friend from removee friend list
+#     removee_profile = Profile.objects.get(user=removee)
+#     removee_profile.friends.remove(remover)
+
+

@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('checklist', '0008_remove_entry_entry_name_case_insensitive_unique_and_more'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+
     ]
 
     operations = [
@@ -42,7 +42,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('friends', models.ManyToManyField(blank=True, related_name='friends_with', to='checklist.profile')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AlterField(
