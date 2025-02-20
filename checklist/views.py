@@ -71,7 +71,7 @@ class UserChecklistListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         """Return lists created by user."""
-        return Checklist.objects.filter(author__user=self.request.user)
+        return Checklist.objects.filter(author__username=self.request.user)
 
 # class FriendsListView(LoginRequiredMixin, generic.ListView):
 #     model = Profile
