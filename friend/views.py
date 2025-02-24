@@ -17,7 +17,7 @@ from rest_framework.response import Response
 def friends_list_view(request, *args, **kwargs):
     context = {}
     user = request.user
-    if user.is_authenticatex:
+    if user.is_authenticated:
         user_id = kwargs.get("user_id")
         if user_id:
             try:

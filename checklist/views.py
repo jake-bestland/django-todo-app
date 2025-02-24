@@ -97,7 +97,7 @@ class ChecklistCreate(LoginRequiredMixin, generic.CreateView):
 
     def get_initial(self):
         initial_data = super().get_initial()
-        author = Account.objects.get(user=self.request.user)
+        author = Account.objects.get(username=self.request.user)
         initial_data["author"] = author
         return initial_data
     
@@ -107,7 +107,7 @@ class ChecklistCreate(LoginRequiredMixin, generic.CreateView):
         return context
     
     def get_success_url(self):
-        return reverse("index", args=[self.request.user])
+        return reverse("checklist:index", args=[self.request.user])
 
 class EntryCreate(LoginRequiredMixin, generic.CreateView):
     model = Entry
@@ -130,7 +130,7 @@ class EntryCreate(LoginRequiredMixin, generic.CreateView):
         return context
     
     def get_success_url(self):
-        return reverse("list", args=[self.request.user, self.object.checklist.slug])
+        return reverse("checklist:list", args=[self.request.user, self.object.checklist.slug])
 
 class EntryUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Entry
@@ -146,21 +146,21 @@ class EntryUpdate(LoginRequiredMixin, generic.UpdateView):
         return context
     
     def get_success_url(self):
-        return reverse("list", args=[self.request.user, self.object.checklist.slug])
+        return reverse("checklist:list", args=[self.request.user, self.object.checklist.slug])
 
 
 class ChecklistDelete(LoginRequiredMixin, generic.DeleteView):
     model = Checklist
 
     def get_success_url(self):
-        return reverse_lazy("index", args=[self.request.user])
+        return reverse_lazy("checklist:index", args=[self.request.user])
 
 
 class EntryDelete(LoginRequiredMixin, generic.DeleteView):
     model = Entry
 
     def get_success_url(self):
-        return reverse_lazy("list", args=[self.request.user, self.object.checklist.slug])
+        return reverse_lazy("checklist:list", args=[self.request.user, self.object.checklist.slug])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
