@@ -11,7 +11,7 @@ from friend.models import FriendList, FriendRequest
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
-        return redirect('/' + str(request.user.id) + '/')
+        return redirect('/' + str(request.user.username) + '/')
     else:
         if request.method =='POST':
             if 'signupform' in request.POST:
@@ -65,9 +65,9 @@ def account_search_view(request, *args, **kwargs):
 def account_view(request, *args, **kwargs):
     """L"""
     context = {}
-    user_id = kwargs.get("user_id")
+    username = kwargs.get("username")
     try:
-        account = Account.objects.get(pk=user_id)
+        account = Account.objects.get(username=username)
     except:
         return HttpResponse("Something went wrong.")
     if account:
@@ -95,7 +95,7 @@ def account_view(request, *args, **kwargs):
         user = request.user
         if user.is_authenticated and user != account:
             is_self = False
-            if friends.filter(pk=user_id):
+            if friends.filter(username=user.username):
                 is_friend = True
             else:
                 is_friend = False

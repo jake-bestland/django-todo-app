@@ -18,13 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from account.views import welcome
+from account.views import welcome, account_search_view, account_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('account.urls')),
-    path('lists/', include('checklist.urls')),
-    path('friend/', include('friend.urls')),
+    path('', welcome, name='welcome'),
+    path('search/', account_search_view, name='search'),
+    path('<str:username>/', account_view, name='view'),
+    path('<str:username>/lists/', include('checklist.urls')),
+    path('<str:username>/friends/', include('friend.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     
 ]

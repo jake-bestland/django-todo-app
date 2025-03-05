@@ -18,7 +18,7 @@
                 <a class="navbar-brand" href="/"><strong>Hello, {{user.username|default:"Guest" }}!  Remember to-do...</strong></a>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search for friends" aria-label="Search for friends">
-                    <a type="submit" href="{% url 'account:search' %}" class="btn btn-primary">Search</a>
+                    <a type="submit" href="{% url 'search' %}" class="btn btn-primary">Search</a>
                 </form>
 
                 <ul class="nav justify-content-end">

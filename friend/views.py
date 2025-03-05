@@ -18,10 +18,10 @@ def friends_list_view(request, *args, **kwargs):
     context = {}
     user = request.user
     if user.is_authenticated:
-        user_id = kwargs.get("user_id")
-        if user_id:
+        username = kwargs.get("username")
+        if username:
             try:
-                this_user = Account.objects.get(pk=user_id)
+                this_user = Account.objects.get(username=user.username)
                 context['this_user'] = this_user
             except Account.DoesNotExist:
                 return HttpResponse("That user doesn not exist.")
