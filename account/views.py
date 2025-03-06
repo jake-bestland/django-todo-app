@@ -7,6 +7,7 @@ from .models import Account
 from friend.utils import get_friend_request_or_false
 from friend.friend_request_status import FriendRequestStatus
 from friend.models import FriendList, FriendRequest
+from django.db.models import Q
 
 # Create your views here.
 def welcome(request):
@@ -48,7 +49,9 @@ def account_search_view(request, *args, **kwargs):
         if 'q' in request.GET:
             search_query = request.GET['q']
             if len(search_query) > 0:
-                search_results = Account.objects.filter(email__icontains=search_query).filter(username__icontains=search_query).distinct()
+                multiple_q = Q(Q(email__icontains=search_query) | Q(username__icontains=search_query))
+                search_results = Account.objects.filter(multiple_q)
+                # search_results = Account.objects.filter(email__icontains=search_query).filter(username__icontains=search_query).distinct()
                 user = request.user
                 accounts = [] # [(account1, True), (account2, False), ...]
                 if user.is_authenticated:
@@ -61,8 +64,6 @@ def account_search_view(request, *args, **kwargs):
                     for account in search_results:
                         accounts.append((account, False))
                     context['accounts'] = accounts
-            else:
-                return HttpResponse("Did not work.")
         
         
     return render(request, "account/search_results.html", context)
