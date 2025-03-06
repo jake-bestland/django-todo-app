@@ -60,7 +60,7 @@ class Checklist(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("list", kwargs=[str(self.author.user), str(self.slug)])
+        return reverse("list", kwargs=[str(self.author.username), str(self.slug)])
 
     def __str__(self):
         """String for representing the Model object."""
@@ -80,7 +80,7 @@ class Entry(models.Model):
     # sub_category = models.CharField(max_length=100, null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("entry-update", kwargs=[str(self.checklist.author.user), str(self.checklist.slug), str(self.id)])
+        return reverse("entry-update", kwargs=[str(self.checklist.author.username), str(self.checklist.slug), str(self.id)])
     
     def __str__(self):
         """String for representing the Model object."""
