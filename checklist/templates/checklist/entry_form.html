@@ -9,10 +9,10 @@
         {{ form.as_table }}
     </table>
     <button type="submit" class="btn btn-primary">Save</button>
-    <a href="{% url 'checklist:list' user.username checklist.slug %}" class="btn btn-primary">Cancel</a>
+    <a href="{% url 'checklist:list' checklist.slug %}" class="btn btn-primary">Cancel</a>
     {% if object %}
     <button type="button">
-        <a href="{% url 'checklist:entry-delete' user.username checklist.slug object.id %}" class="btn btn-primary">Delete this entry</a>
+        <a href="{% url 'checklist:entry-delete' checklist.slug object.id %}" class="btn btn-primary">Delete this entry</a>
     </button>
     {% endif %}
 </form>

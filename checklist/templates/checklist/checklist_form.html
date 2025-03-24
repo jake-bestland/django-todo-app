@@ -6,10 +6,12 @@
     <div>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_p }} 
             <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{% url 'checklist:index' user.username %}" class="btn btn-primary">Cancel</a>
+            <a href="{% url 'checklist:index' %}" class="btn btn-primary">Cancel</a>
         </form>
     </div>
 
 {% endblock %}
+
+<!-- make author field hidden -->

@@ -12,13 +12,13 @@
 		<div class="d-flex flex-row flex-wrap">
 		{% for account in accounts %}
 		<div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
-			<a class="profile-link" href="{% url 'view' username=account.0.username %}">
+			<a class="profile-link" href="{% url 'account:view' username=account.0.username %}">
 				<div class="card-image m-2">
 					<img class="img-fluid profile-image" src="{{account.0.profile_image.url}}" alt="" width="100">
 				</div>
 			</a>
             <div class="card-center px-2">
-                <a class="profile-link" href="{% url 'view' username=account.0.username %}">
+                <a class="profile-link" href="{% url 'account:view' username=account.0.username %}">
                     <h4 class="card-title">{{ account.0.username|truncatechars:50 }}</h4>
                 </a>
             </div>

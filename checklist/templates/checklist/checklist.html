@@ -13,16 +13,16 @@
             <li class="list-group-item d-flex justify-content-between align-items-center ps-4 border border-black">
                 <input class="form-check-input me-1" type="checkbox" value="" id="{{ entry.name }}">
                 <label class="form-check-label ps-2" for="{{ entry.name}}">{{ entry.name|title }}</label>
-                <a href="{% url 'checklist:entry-delete' user.username checklist.slug entry.id %}" class="badge text-bg-primary rounded-pill">Delete</a>
+                <a href="{% url 'checklist:entry-delete' checklist.slug entry.id %}" class="badge text-bg-primary rounded-pill">Delete</a>
             </li>
             {% empty %}
             <p>There are no entries in this list.</p>
             {% endfor %}
         </ul>
         <p>
-                <a class="btn btn-primary" href="{% url 'checklist:entry-add' user.username checklist.slug %}">Add a new entry</a>
-                <a class="btn btn-danger" href="{% url 'checklist:list-delete' user.username checklist.slug %}">Delete this list</a>
-                <a href="{% url 'checklist:index' user.username %}" class="btn btn-primary">Back</a>
+                <a class="btn btn-primary" href="{% url 'checklist:entry-add' checklist.slug %}">Add a new entry</a>
+                <a class="btn btn-danger" href="{% url 'checklist:list-delete' checklist.slug %}">Delete this list</a>
+                <a href="{% url 'checklist:index' %}" class="btn btn-primary">Back</a>
 
         </p>
     </div>

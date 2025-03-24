@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.conf import settings
@@ -12,7 +13,7 @@ from django.db.models import Q
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
-        return redirect('/' + str(request.user.username) + '/')
+        return redirect(reverse("account:view", args=[request.user.username]))
     else:
         if request.method =='POST':
             if 'signupform' in request.POST:
