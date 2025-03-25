@@ -55,17 +55,20 @@
 						<!-- You sent them a request -->
 						{% if request_sent == 1 %}
 						<div class="d-flex flex-column align-items-center pt-4">
-							<a class="btn btn-danger" href="">
-								Cancel Friend Request
-							</a>
+							<form method="post" action="{% url 'friend:cancel-friend-request' friend_request_id %}">
+								{% csrf_token %}
+								<input type="submit" class="btn btn-danger" value="Cancel Friend Request" />
+							</form>
 						</div>
 						{% endif %}
 						<!-- No requests have been sent -->
 						{% if request_sent == -1 %}
 						<div class="d-flex flex-column align-items-center pt-4">
-							<a class="btn btn-primary" href="{% url 'friend:send-friend-request' username %}">
-								Send Friend Request
-							</a>
+							<form method="post" action="{% url 'friend:send-friend-request' username %}">
+								{% csrf_token %}
+								<input type="hidden" name="receiver_username" value="{{ receiver_username }}" />
+								<input type="submit" class="btn btn-primary" value="Send Friend Request" />
+							</form>
 						</div>
 						{% endif %}
 				{% endif %}
@@ -73,12 +76,18 @@
 					
 				{% if is_friend %}
 					<div class="dropdown pt-4 m-auto">
-						<button class="btn btn-secondary dropdown-toggle friends-btn" type="button" id="id_friends_toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Friends
 						</button>
-						<div class="dropdown-menu" aria-labelledby="id_friends_toggle">
-							<a class="dropdown-item" href="{% url 'friend:remove-friend' %}">Unfriend</a>
-						</div>
+						<ul class="dropdown-menu">
+							<li>
+								<form method="post" class="dropdown-item" action="{% url 'friend:remove-friend' username %}">
+									{% csrf_token %}
+									<input type="hidden" name="removee_username" value="{{ removee_username}}" />
+									<input type="submit" class="btn btn-danger" value="Remove Friend" />
+								</form>
+							</li>
+						</ul>
 					</div>
 				{% endif %}
 				
@@ -86,7 +95,7 @@
 		  		<div class="d-flex flex-column pt-4">
 					<a href="{% url 'friend:friend-list' username %}">
 						<div class="d-flex flex-row align-items-center justify-content-center icon-container">
-							<span class="material-icons mr-2 friends-icon">contact_page</span><span class="friend-text">Friends ({{friends|length}})</span>
+							<span class="material-icons mr-2 friends-icon">contact_page</span><span class="friend-text">{{ username }}'s Friends ({{friends|length}})</span>
 						</div>
 					</a>
 				</div>

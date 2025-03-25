@@ -111,10 +111,11 @@ def account_view(request, *args, **kwargs):
                 # CASE1: Request has been sent from THEM to YOU: FriendRequestStatus.THEM_SENT_TO_YOU
                 if get_friend_request_or_false(sender=account, receiver=user) != False:
                     request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
-                    context['pending_friend_request_id'] = get_friend_request_or_false(sender=account, receiver=user).id
+                    context['friend_request_id'] = get_friend_request_or_false(sender=account, receiver=user).id
                 # CASE2: Request has been sent from YOU to THEM: FriendRequestStatus.YOU_SENT_TO_THEM
                 elif get_friend_request_or_false(sender=user, receiver=account) != False:
                     request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+                    context['friend_request_id'] = get_friend_request_or_false(sender=user, receiver=account).id
                 # CASE3: No request sent from YOU or THEM: FriendRequestStatus.NO_REQUEST_SENT
                 else:
                     request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
