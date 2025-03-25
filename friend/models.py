@@ -1,9 +1,5 @@
-# from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
-from .signals import friend_removed, friend_request_accepted, friend_request_created, friend_request_declined
-# from checklist.models import Profile
 
 # Create your models here.
 class FriendList(models.Model):
@@ -18,8 +14,6 @@ class FriendList(models.Model):
         if not account in self.friends.all():
             self.friends.add(account)
             self.save()
-
-            # content_type = ContentType.objects.get_for_model(self)
 
     def remove_friend(self, account):
         """Remove a friend."""
@@ -38,16 +32,11 @@ class FriendList(models.Model):
         friends_list = FriendList.objects.get(user=removee)
         friends_list.remove_friend(remover_friends_list.user)
 
-        # content_type = ContentType.objects.get_for_model(self)
-
     def is_mutual_friend(self, friend):
         """Is this a friend? """
         if friend in self.friends.all():
             return True
         return False
-    
-
-
 
 class FriendRequest(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender', on_delete=models.CASCADE)
