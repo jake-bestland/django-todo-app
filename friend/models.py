@@ -2,6 +2,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from .signals import friend_removed, friend_request_accepted, friend_request_created, friend_request_declined
 # from checklist.models import Profile
 
 # Create your models here.
@@ -24,6 +25,7 @@ class FriendList(models.Model):
         """Remove a friend."""
         if account in self.friends.all():
             self.friends.remove(account)
+            self.save()
 
     def unfriend(self, removee):
         """Initiate the action of unfriending someone."""
@@ -70,4 +72,9 @@ class FriendRequest(models.Model):
     def decline(self):
         """Decline a friend request.  It is "declined" by setting the 'is_active' field to False."""
         self.is_active = False
+        self.save()
 
+    def cancel(self):
+        """Cancel a friend request that you sent."""
+        self.is_active = False
+        self.save()

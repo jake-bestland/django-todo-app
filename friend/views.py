@@ -135,49 +135,53 @@ def friend_requests_list(request, username):
 # 		payload['response'] = "You must be authenticated to accept a friend request."
 # 	return HttpResponse(json.dumps(payload), content_type="application/json")
 
-def remove_friend(request, *args, **kwargs):
-	user = request.user
-	payload = {}
-	if request.method == "POST" and user.is_authenticated:
-		user_id = request.POST.get("receiver_user_id")
-		if user_id:
-			try:
-				removee = Account.objects.get(pk=user_id)
-				friend_list = FriendList.objects.get(user=user)
-				friend_list.unfriend(removee)
-				payload['response'] = "Successfully removed that friend."
-			except Exception as e:
-				payload['response'] = f"Something went wrong: {str(e)}"
-		else:
-			payload['response'] = "There was an error. Unable to remove that friend."
-	else:
-		# should never happen
-		payload['response'] = "You must be authenticated to remove a friend."
-	return HttpResponse(json.dumps(payload), content_type="application/json")
+# def remove_friend(request, *args, **kwargs):
+# 	user = request.user
+# 	payload = {}
+# 	if request.method == "POST" and user.is_authenticated:
+# 		user_id = request.POST.get("receiver_user_id")
+# 		if user_id:
+# 			try:
+# 				removee = Account.objects.get(pk=user_id)
+# 				friend_list = FriendList.objects.get(user=user)
+# 				friend_list.unfriend(removee)
+# 				payload['response'] = "Successfully removed that friend."
+# 			except Exception as e:
+# 				payload['response'] = f"Something went wrong: {str(e)}"
+# 		else:
+# 			payload['response'] = "There was an error. Unable to remove that friend."
+# 	else:
+# 		# should never happen
+# 		payload['response'] = "You must be authenticated to remove a friend."
+# 	return HttpResponse(json.dumps(payload), content_type="application/json")
 
-def decline_friend_request(request, *args, **kwargs):
-	user = request.user
-	payload = {}
-	if request.method == "GET" and user.is_authenticated:
-		friend_request_id = kwargs.get("friend_request_id")
-		if friend_request_id:
-			friend_request = FriendRequest.objects.get(pk=friend_request_id)
-			# confirm that is the correct request
-			if friend_request.receiver == user:
-				if friend_request: 
-					# found the request. Now decline it
-					updated_notification = friend_request.decline()
-					payload['response'] = "Friend request declined."
-				else:
-					payload['response'] = "Something went wrong."
-			else:
-				payload['response'] = "That is not your friend request to decline."
-		else:
-			payload['response'] = "Unable to decline that friend request."
-	else:
-		# should never happen
-		payload['response'] = "You must be authenticated to decline a friend request."
-	return HttpResponse(json.dumps(payload), content_type="application/json")
+
+
+
+
+# def decline_friend_request(request, *args, **kwargs):
+# 	user = request.user
+# 	payload = {}
+# 	if request.method == "GET" and user.is_authenticated:
+# 		friend_request_id = kwargs.get("friend_request_id")
+# 		if friend_request_id:
+# 			friend_request = FriendRequest.objects.get(pk=friend_request_id)
+# 			# confirm that is the correct request
+# 			if friend_request.receiver == user:
+# 				if friend_request: 
+# 					# found the request. Now decline it
+# 					updated_notification = friend_request.decline()
+# 					payload['response'] = "Friend request declined."
+# 				else:
+# 					payload['response'] = "Something went wrong."
+# 			else:
+# 				payload['response'] = "That is not your friend request to decline."
+# 		else:
+# 			payload['response'] = "Unable to decline that friend request."
+# 	else:
+# 		# should never happen
+# 		payload['response'] = "You must be authenticated to decline a friend request."
+# 	return HttpResponse(json.dumps(payload), content_type="application/json")
 
 
 
@@ -225,12 +229,34 @@ def accept_friend_request(request, friend_request_id):
 	return redirect('account:view', username=request.user.username)
     
 
-# @login_required
-# def reject_friend_request(request, request_id):
-#     friend_request = get_object_or_404(FriendRequest, id=request_id, receiver=request.user, status='pending')
-#     friend_request.status = 'rejected'
-#     friend_request.save()
-#     return Response({"message": "Friend request rejected"})
+@login_required
+def decline_friend_request(request, friend_request_id):
+	if request.method == "POST":
+		friend_request = get_object_or_404(FriendRequest, id=friend_request_id, receiver=request.user, is_active=True)
+		friend_request.decline()
+		return redirect('account:view', username=request.user.username)
+	
+	return redirect('account:view', username=request.user.username)
+
+@login_required
+def cancel_friend_request(request, friend_request_id):
+	if request.method == "POST":
+		friend_request = FriendRequest.objects.get(id=friend_request_id)
+		friend_request.cancel()
+		return redirect('account:view', username=request.user.username)
+	
+	return redirect('account:view', username=request.user.username)
+
+@login_required
+def remove_friend(request, removee_username):
+	if request.method == "POST":
+		removee = get_object_or_404(Account, username=removee_username)
+		friend_list = FriendList.objects.get(user=request.user)
+		friend_list.unfriend(removee)
+		return redirect('account:view', username=request.user.username)
+	
+	return redirect('account:view', username=request.user.username)
+
 
 # @login_required
 # def remove_friend(request, removee):
