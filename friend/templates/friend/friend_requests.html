@@ -22,12 +22,12 @@
 			<div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
 				<form method="post" action="{% url 'friend:friend-request-accept' friend_request_id.0 %}">
 					{% csrf_token %}
-					<input type="submit" value="accept" />
+					<input type="submit" class="btn btn-primary" value="accept" />
 				</form>
 
 				<form method="post" action="{% url 'friend:friend-request-decline' friend_request_id.0 %}">
 					{% csrf_token %}
-					<input type="submit" value="decline" />
+					<input type="submit" class="btn btn-danger" value="decline" />
 				</form>
 			</div>
 		</div>
