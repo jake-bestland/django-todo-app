@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'checklist',
     'friend',
     'account',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

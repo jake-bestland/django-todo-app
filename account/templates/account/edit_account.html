@@ -12,10 +12,9 @@
 		  	<div class="d-flex flex-column justify-content-center p-4">
 		  		<form class="form-signin" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <h6 class="mt-4 field-heading">Edit Profile:</h6>
                     <img class="border border-dark rounded-circle img-fluid mx-auto profile-image" id="id_profile_image_display" src="{{form.initial.profile_image.url}}" alt="profile-image" width="200">
                     <br>
-                    Change Profile Image:
+                    <h6 class="mt-4 field-heading">Change profile image</h6>
                     <input type="file" name="profile_image" accept="image/*" id="id_profile_image" class="form-control">
 			  		<h6 class="mt-4 field-heading">Email</h6>
 			  		<input type="email" name="email" id="id_input_email" class="form-control" placeholder="Email address" required autofocus value={{form.initial.email}}>
