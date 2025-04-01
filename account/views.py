@@ -3,12 +3,14 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.conf import settings
-from .forms import SignupForm, SigninForm
+from .forms import SignupForm, SigninForm, AccountUpdateForm
 from .models import Account
 from friend.utils import get_friend_request_or_false
 from friend.friend_request_status import FriendRequestStatus
 from friend.models import FriendList, FriendRequest
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Create your views here.
 def welcome(request):
@@ -135,3 +137,43 @@ def account_view(request, *args, **kwargs):
         context['friend_requests'] = friend_requests
         context['BASE_URL'] = settings.BASE_URL
         return render(request, "account/account.html", context)
+    
+@login_required
+def edit_account_view(request, username):
+    account = Account.objects.get(username=username)
+    if account.pk != request.user.pk:
+           messages.success(request, ("You cannot edit someone elses profile."))
+           return redirect("account:view", username=request.user.username)
+    context = {}
+    if request.method == "POST":
+        form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+           form.save()
+
+           messages.success(request, ("Your Profile Has Been Updated!"))
+           return redirect("account:view", username=request.user.username)
+        else:
+            form = AccountUpdateForm(request.POST, instance=request.user,
+                                     initial={
+                                          "id": account.pk,
+                                          "email": account.email,
+                                          "username": account.username,
+                                          "profile_image": account.profile_image,
+                                          "hide_email": account.hide_email,
+                                          }
+                                          )
+            context['form'] = form
+    else:
+        form = AccountUpdateForm(
+            initial={
+                "id": account.pk,
+                "email": account.email,
+                "username": account.username,
+                "profile_image": account.profile_image,
+                "hide_email": account.hide_email,
+            }
+        )
+        context['form'] = form
+    context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = settings.DATA_UPLOAD_MAX_MEMORY_SIZE
+    return render(request, "account/edit_account.html", context)
+            

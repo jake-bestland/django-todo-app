@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="container-fluid">
+	<div class="row justify-content-center">
+		<div class="card profile-card">
+		  <div class="card-body">
+		  	<div class="d-flex flex-column justify-content-center p-4">
+		  		<form class="form-signin" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h6 class="mt-4 field-heading">Edit Profile:</h6>
+                    <img class="border border-dark rounded-circle img-fluid mx-auto profile-image" id="id_profile_image_display" src="{{form.initial.profile_image.url}}" alt="profile-image" width="200">
+                    <br>
+                    Change Profile Image:
+                    <input type="file" name="profile_image" accept="image/*" id="id_profile_image" class="form-control">
+			  		<h6 class="mt-4 field-heading">Email</h6>
+			  		<input type="email" name="email" id="id_input_email" class="form-control" placeholder="Email address" required autofocus value={{form.initial.email}}>
+			  		<h6 class="mt-4 field-heading">Username</h6>
+			  		<input type="text" name="username" id="id_input_username" class="form-control" placeholder="Username" required value="{{form.initial.username}}">
+					<div class="mt-4 checkbox">
+						<label>
+							<input type="checkbox" name="hide_email" id="id_input_hide_email" {% if form.initial.hide_email %}checked{%endif%}>
+							Hide Email
+						</label>
+			  			
+					</div>
+
+					{% for field in form %}
+					<p>
+					{% for error in field.errors %}
+					<p style="color: red">{{ error }}</p>
+					{% endfor %}
+					</p>
+					{% endfor %}
+					{% if form.non_field_errors %}
+					<div style="color: red">
+					<p>{{form.non_field_errors}}</p>
+					</div>
+
+					{% endif %}
+
+					<div class="d-flex flex-column mt-4">
+						<button class="mt-4 btn btn-primary flex-grow-1" type="submit">Save</button>
+					</div>
+					
+				</form>
+
+		  	</div>
+		  </div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

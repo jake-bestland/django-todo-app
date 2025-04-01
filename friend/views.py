@@ -51,7 +51,7 @@ def friend_requests_list(request, username):
 def send_friend_request(request, receiver_username):
 	"""Create a FriendRequest."""
 	context = {"receiver_username": receiver_username}
-	if request.method =="POST":
+	if request.method == "POST":
 		receiver = Account.objects.get(username=receiver_username)
 		sender = request.user
 		try:
