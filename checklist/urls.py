@@ -15,8 +15,4 @@ urlpatterns = [
     path('<slug:slug>/add-entry/', views.EntryCreate.as_view(), name="entry-add"),
     path('<slug:slug>/<int:pk>/', views.EntryUpdate.as_view(), name="entry-update"),
     path('<slug:slug>/<int:pk>/delete/', views.EntryDelete.as_view(), name="entry-delete"),
-#     path('<str:username>/friends/', FriendsListView.as_view(), name='friends-list'),
-#     path('<str:username>/send_friend_request/<int:receiver_id>/', send_friend_request, name='send_friend_request'),
-#     path('<str:username>/accept_friend_request/<int:request_id>/', accept_friend_request, name='accept_friend_request'),
-#     path('<str:username>/reject_friend_request/<int:request_id>/', reject_friend_request, name='reject_friend_request'),
 ]
