@@ -15,7 +15,7 @@
         <div>
         <nav class="navbar">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/"><strong>Hello, {{user.username|default:"Guest" }}!  Remember to-do...</strong></a>
+                <a class="navbar-brand" href="/"><strong>Hello, {{user.username|default:"Guest" }}!</strong></a>
                 <form class="d-flex" role="search" action="{% url 'search' %}">
                     <input class="form-control me-2" name="q" type="search" placeholder="Search for friends" aria-label="Search for friends">
                     <button type="submit" class="btn btn-primary">Search</button>
