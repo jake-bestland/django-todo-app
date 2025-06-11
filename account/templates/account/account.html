@@ -6,7 +6,7 @@
 <div class="container-fluid">
 	<div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
 
-		<div class="card profile-card m-2">
+		<div class="card profile-card m-2 bg-info-subtle">
 		  <div class="card-body">
 		  	<div class="d-flex flex-column justify-content-center p-4">
 		  		<div class="image-container mx-auto mb-4">
@@ -41,7 +41,7 @@
 
 			<!-- THEM to YOU -->
 			{% if request_sent == 0 %}
-			<div class="card m-2 p-4">
+			<div class="card m-2 p-4 bg-warning-subtle">
 				<div class="d-flex flex-row align-items-center">
 					<span class="friend-text align-items-center mr-2">Accept Friend Request?</span>
 					<form method="post" action="{% url 'friend:friend-request-decline' friend_request_id %}">
@@ -65,7 +65,7 @@
 			</div>
 			{% endif %}
 
-			<div class="card m-2 px-4 pb-4">
+			<div class="card m-2 px-4 pb-4 bg-warning-subtle">
 				<!-- Cancel Friend Request / Send Friend Request / Remove Friend -->
 				{% if is_friend == False and is_self == False %}
 						<!-- You sent them a request -->
@@ -119,7 +119,7 @@
 			</div>
 
 			{% if friend_requests %}
-			<div class="card m-2 px-4 pb-4">
+			<div class="card m-2 px-4 pb-4 bg-warning-subtle">
 				<!-- Friend requests -->
 		  		<div class="d-flex flex-column pt-4">
 					<a href="{% url 'friend:friend-requests' username %}">
@@ -130,7 +130,7 @@
 				</div>
 			</div>
 			{% endif %}
-			<div class="card m-2 px-4 pb-4">
+			<div class="card m-2 px-4 pb-4 bg-warning-subtle">
 				<div class="d-flex flex-column pt-4">
 					<a href="{% url 'checklist:index' %}">
 						<div class="d-flex flex-row gap-2 align-items-start justify-content-start">
