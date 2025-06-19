@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-# from checklist.forms import SignupForm, SigninForm #, NewChecklistForm, EntryForm
 from .models import Checklist, Entry#, #Profile#, FriendRequest
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -88,6 +87,18 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data()
         context["checklist"] = Checklist.objects.get(slug=self.kwargs["slug"])
         return context
+    
+    def post(self, request, *args, **kwargs):
+        for entry in self.get_queryset():
+            checkbox_name = f"checkbox_{entry.id}"
+            completed = checkbox_name in request.POST
+
+            if entry.completed != completed:
+                entry.completed = completed
+                entry.save()
+
+        return redirect(request.path)
+
 
 
 
