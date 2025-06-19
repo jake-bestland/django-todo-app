@@ -8,10 +8,13 @@
         <div>
             <h3>{{ checklist.title | title }}:</h3>
         </div>
+        
+        <form method="post">
+        {% csrf_token %}
         <ul class="list-group border mb-3 border-black">
             {% for entry in object_list %}
             <li class="list-group-item d-flex justify-content-between align-items-center ps-4 bg-success-subtle border border-black">
-                <input class="form-check-input me-1" type="checkbox" value="" id="{{ entry.name }}">
+                <input class="form-check-input me-1" type="checkbox" name="checkbox_{{entry.id}}" value="true" id="{{ entry.name }}" {% if entry.completed %} checked {% endif %}>
                 <label class="form-check-label ps-2" for="{{ entry.name}}">{{ entry.name|title }}</label>
                 <a href="{% url 'checklist:entry-delete' checklist.slug entry.id %}" class="badge text-bg-primary rounded-pill">Delete</a>
             </li>
@@ -19,6 +22,9 @@
             <p>There are no entries in this list.</p>
             {% endfor %}
         </ul>
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+        </form>
+        <br>
         <p>
                 <a class="btn btn-primary" href="{% url 'checklist:entry-add' checklist.slug %}">Add a new entry</a>
                 <a class="btn btn-danger" href="{% url 'checklist:list-delete' checklist.slug %}">Delete this list</a>
